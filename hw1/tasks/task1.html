@@ -1,0 +1,31 @@
+<h2>Task 1: Drawing Single-Color Triangles</h2>
+
+<bold-text>How did we rasterize triangles? </bold-text> <br><br>
+<ol>
+	<li>Calculate the triangle bounding box</li>
+	<ul>
+		<li>The first task at hand is to calculate the triangle bounding box. Instead of loopping through all of the pixels on the screen, we can just simply find the bounding of the box and just loop through the pixels contained in the box. This will be much more efficient performance wise.</li>
+		<li>To find the bounding box, we find the min and max values for both of the \(x\) and \(y\) coordinates.</li>
+		<li>Top Left Bounding Box Coordinate: \( (min x, min y) \)</li>
+		<li>Top Right Bounding Box Coordinate: \( (max x, min y) \)</li>
+		<li>Bottom Left Bounding Box Coordinate: \( (min x, max y) \)</li>
+		<li>Bottom Right Bounding Box Coordinate: \( (max x, max y) \)</li>
+		<li>It is also important to note that when finding these min and max values, we also bounded them with \(0\), \(width\), \(height\) if the value exceeded the visible frame.</li>
+	</ul> 
+	<li>Perform line tests</li>
+	<ul>
+		<li>Then, we loop through all pixels within the bounding box and for each pixel we check to see if it is inside the triangle. However, the pixel coordinates that we are looping through are the top left corner of the visual pixel. 
+			Instead, we want to use the sample point which is calculated by adding an offset of 1/2 to both the x and y coordinates. 
+			So for a given pixel \((x, y) \), the sample point will be \( (x + 1/2, y + 1/2) \). 
+			To determine if a pixel is inside a triangle, we use the line test by calculating \( L(x,y) = V \cdot N = -(x - x_0)(y_1 - y_0) + (y - y_0)(x_1 - x_0) \) for all three segments and the sample point in question. 
+			Now from \( L(x,y) \), we can see if its inside the triangle by finding \( L(x,y) >= 0 \) for all three line segements. However, this only works if the vertices are given to us in counter clockwise orientation. 
+			If they are given to us clockwise, this comparison would be invalid. Thus, we also need to account for clockwise vertices so we need to calculate \( L(x,y) <= 0 \) as well.
+			Then at the end, we just see if either clockwise or counter-clock wise line tests hold true.
+	</ul>
+</ol>
+
+<bold-text><i>basic/test4.svg</i></bold-text>
+<figure>
+	<img src="../../task_1.png" alt="basic/test4.svg" style="width:70%"/>
+	<figcaption>Observe the "jaggedness" for the triangle edges!</figcaption>
+</figure>

@@ -237,6 +237,9 @@
 					});
 					buildTaskSidebar();
 					setupTaskScrollSpy();
+					if (window.MathJax && MathJax.Hub) {
+						MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+					}
 				})
 				.catch(err => console.error('Failed to load task files:', err));
 		</script>

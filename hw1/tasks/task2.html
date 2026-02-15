@@ -1,0 +1,55 @@
+<h2>Task 2: Antialiasing by Supersampling</h2>
+
+<bold-text>How did we supersample? </bold-text> <br><br>
+<ol>
+	<li>The main idea behind supersampling is to partition each individual pixel into smaller sections so that we can increase the sampling density, resulting in a more finer detail output.</li>
+	<ul>
+		<li>To draw the actual pixels on to the screen, a section of the rasterization pipeline includes resolving the sample buffer to the framebuffer. 
+            The sample buffer contains CGL Color data types; however, the framebuffer is an array of floats so "resolving" simply means converting the Color types into floats. </li>
+        <li>When we supersample, we can increase or decrease the sampling rate. To accomodate the sampling rate change, we have to modify a couple of places. First, we have to adjust the size of the sample_buffer depending on the sampling rate. In <code>RasterizerImp::set_sample_rate</code> we resize the sample buffer to <code>sample_rate * width * height</code>. We do the same in <code>RasterizerImp::set_framebuffer_target</code>.</li>
+        <li>In our main rasterization logic in <code>RasterizerImp::rasterize_triangle</code>, we multiply our loop start and end bounds by <code>sqrt(sample_rate)</code> to increase/decrease the density of the grid. To calculate the new coordinate of the sample point, we need to additionally find the inner offset of supersample pixel in relation to the main coordinate before we supersampled.</li>
+        <ul>
+            <li>Pixel coordinate (without supersample offset): \((\frac{x}{\sqrt{sample\_rate}}, \frac{y}{\sqrt{sample\_rate}})\)</li>
+            <li>Supersample offset: \((x \bmod \sqrt{sample\_rate}, y \bmod \sqrt{sample\_rate}) \)</li>
+        </ul>
+        <ul>Putting it all together, our supersample pixel coordinate would is \((pixel\_x + \frac{(ss\_offset\_x + 0.5f)}{\sqrt{sample\_rate}}, pixel\_y + \frac{(ss\_offset\_y + 0.5f)}{\sqrt{sample\_rate}})\)</ul>
+        <ul>To set the correct index in the sample buffer, the updated index is \((y * width + x) * sample\_rate + ss\_offset\_y * \sqrt{sample\_rate} + ss_offset_x\) </ul>
+	</ul> 
+    <li>Modifying <code>RasterizerImp::fill_pixel</code>:</li>
+    <ul>
+        <li>For a pixel, we need to fill in all of the supersampled pixels to fix points and lines as we don't really care about supersampling for them. So within this function, we just fill the supersample pixels the same color.</li>
+    </ul>
+	 <li>Averaging pixels in <code>RasterizerImp::resolve_to_framebuffer</code>:</li>
+     <ul>
+        <li>The final step of supersampling is to average the neighboring pixels and set it back to the main pixel. In <code>RasterizerImp::resolve_to_framebuffer</code>, we are taking the average color rgb values from all the supersampled pixels of area \(sample\_rate\) to set it to the pixel in the framebuffer representing all of the supersampled pixels.</li>
+     </ul>
+</ol>
+
+<bold-text><i>basic/test4.svg supersampling rate comparisons:</i></bold-text>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+        <img src="../screenshots/task_2_1px.png" width="400px"/>
+        <figcaption>sampling rate 1 per pixel</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="../screenshots/task_2_4px.png" width="400px"/>
+        <figcaption>sampling rate 4 per pixel</figcaption>
+    </td>
+    </tr>
+    <tr>
+    <td style="text-align: center;">
+        <img src="../screenshots/task_2_16px.png" width="400px"/>
+        <figcaption>sampling rate 16 per pixel</figcaption>
+    </td>
+    </tr>
+</table>
+</div>
+
+<br>
+<bold-text><i>explaination of results:</i></bold-text>
+<p>We can see that as the sampling rate per pixel increases, the averaging of neighboring pixels becomes more apparent. When we sample 1 per pixel, there are missing gaps and artifacts as a result of this aliasing.
+As we increase the sampling rate, the averaging step that we perform in <code>RasterizerImp::resolve_to_framebuffer</code> helps "fill" in the gap to provide a more smooth edge so that it looks more continuous.
+Since we are subdividing a pixel into more squares, when we average it acts like a <b>low pass filter</b> so that the averaged pixel smooths out sharp discontinuities and reduces high frequencies.</p>

@@ -77,13 +77,20 @@
 		</div>
 	</body>
 	<script>
-		var links = document.body.getElementsByTagName("a")
-		var a = window.location.href.indexOf(".io")
-		var repo_name = window.location.href.substring(a+3)
-		for(var i = 0; i < links.length; i++){
-			var link = links[i]
-			var actual_name = link.href.substring(link.href.indexOf(".io")+4)
-			link.href = repo_name + actual_name
+		// Only rewrite links for GitHub Pages (e.g. username.github.io/repo-name). On localhost, leave paths as-is.
+		var href = window.location.href;
+		if (href.indexOf("github.io") !== -1) {
+			var links = document.body.getElementsByTagName("a");
+			var a = href.indexOf(".io");
+			var repo_name = href.substring(a + 3);
+			for (var i = 0; i < links.length; i++) {
+				var link = links[i];
+				var ioIdx = link.href.indexOf(".io");
+				if (ioIdx !== -1) {
+					var actual_name = link.href.substring(ioIdx + 4);
+					link.href = repo_name + actual_name;
+				}
+			}
 		}
 	</script>
 </html>

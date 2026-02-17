@@ -1,1 +1,71 @@
 <h2>Task 5: “Pixel sampling” for texture mapping</h2>
+
+<bold-text>Explain pixel sampling in your own words and describe how you implemented it to perform texture mapping. </bold-text> <br><br>
+<p>
+    Pixel sampling determines how texture colors are chosen when pixels are mapped in continuous UV coordinate space. 
+     UV values are not integers, so they need to be converted to discrete texel colors. <br><br>
+
+    The implementation involves computing barycentric coordinates for each sample point inside the triangle and using 
+    them to interpolate the triangle’s texture coordinates. Depending on the sampling mode, these interpolated 
+    coordinates will return either a nearest-neighbor or bilinear sampled color. 
+</p>
+
+<bold-text>Briefly discuss the two different pixel sampling methods, nearest and bilinear. </bold-text> <br><br>
+<p>
+    Nearest sampling chooses the closest texel whose center is closest to the UV coordinate. 
+    While it is fast to perform, it can produce more jagged results. <br> <br>
+
+    Bilinear sampling takes the four texels surrounding the UV coordinate and blends them
+     based on the fractional position of UV within the cell. This method produces smoother 
+     results but requires  more computation. 
+</p>
+
+<bold-text>Show and compare four png screenshots using nearest sampling at 1 sample per pixel, 
+    nearest sampling at 16 samples per pixel, bilinear sampling at 1 sample per pixel, 
+    and bilinear sampling at 16 samples per pixel.
+</bold-text> <br><br>
+
+<p>
+    The warped UC Berkeley logo was used to demonstrate the difference between the two sampling
+     methods since it contains a lot of small details and fine lines where the differences 
+     can be more clearly observed when zoomed in. 
+</p>
+
+<bold-text><i>Nearest Neighbor Sampling 1 sample per pixel </i></bold-text>
+<figure>
+	<img src="screenshots/nearest_1spp.png" style="width:70%"/>
+	<figcaption></figcaption>
+</figure>
+
+<bold-text><i>Bilinear Sampling 1 sample per pixel </i></bold-text>
+<figure>
+	<img src="screenshots/bilinear_1spp.png"  style="width:70%"/>
+	<figcaption></figcaption>
+</figure>
+
+<bold-text><i>Nearest Neighbor Sampling 16 sample per pixel </i></bold-text>
+<figure>
+	<img src="screenshots/nearest_16spp.png" style="width:70%"/>
+	<figcaption></figcaption>
+</figure>
+
+<bold-text><i>Bilinear Sampling 16 sample per pixel </i></bold-text>
+<figure>
+	<img src="screenshots/bilinear_16spp.png" style="width:70%"/>
+	<figcaption></figcaption>
+</figure>
+
+<bold-text>Comment on the relative differences. Discuss when there will be a large difference between 
+    the two methods and why.
+</bold-text> <br><br>
+
+<p>
+    The nearest sampled images have more distinct pixels which creates sharp textures but appear jagged when zoomed in. 
+    The bilinear sampled images have a more smoothed appearance since the colors are determined by 
+    blending the four surrounding texels, resulting in a less pixelated look even when zoomed in. <br><br>
+
+    The two methods will have the largest difference when the texture has a lot of fine details since 
+    it involves more edges where the difference can be the most clearly observed. While higher 
+    sampling rates do result in the edges being less jagged, the averaging of the bilinear sampling 
+    still produces a smoother result at the same sampling level.
+</p>

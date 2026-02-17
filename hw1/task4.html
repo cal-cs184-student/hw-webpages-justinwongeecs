@@ -1,0 +1,32 @@
+<h2>Task 4: Barycentric coordinates</h2>
+
+<bold-text>What ia a barycentric coordinate? </bold-text> <br><br>
+<p>
+    Barycentric coordinates describe a point in a triangle with three weights,
+     each representing how close the point is to one of the vertices. 
+     The three weights sum up to 1, with a larger value indicating being closer to the vertex.
+      If all three weights are positive, then the point lies within the triangle but 
+      if one or more is negative then the point lies outside the triangle. 
+</p>
+
+<figure>
+	<img src="screenshots/single_triangle_interpolation.png" style="width:70%"/>
+	<figcaption>Single triangle with red, blue, green vertices. Barycentric coordinates at each point of blend colors.</figcaption>
+</figure>
+
+<p>
+    To demonstrate this idea, the image depicts a single triangle with red, green, and blue vertices. 
+    Using barycentric coordinates, the color at each pixel within the triangle is determined using
+    a weighted combination of the three vertex colors. The resulting triangle is a color gradient
+    with the colors smoothly blending into each other between the corners.
+</p>
+
+<p>
+    The “color wheel” in test7.svg is the result of many small triangles arranged in a circular
+     pattern with each triangle interpolating between three vertex colors. 
+</p>
+
+<figure>
+	<img src="screenshots/color_wheel_interpolation.png" alt="basic/test7.svg" style="width:70%"/>
+	<figcaption>Color wheel</figcaption>
+</figure>

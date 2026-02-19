@@ -53,3 +53,4 @@
 <p>We can see that as the sampling rate per pixel increases, the averaging of neighboring pixels becomes more apparent. When we sample 1 per pixel, there are missing gaps and artifacts as a result of this aliasing.
 As we increase the sampling rate, the averaging step that we perform in <code>RasterizerImp::resolve_to_framebuffer</code> helps "fill" in the gap to provide a more smooth edge so that it looks more continuous.
 Since we are subdividing a pixel into more squares, when we average it acts like a <b>low pass filter</b> so that the averaged pixel smooths out sharp discontinuities and reduces high frequencies.</p>
+<div class="page-break"></div>

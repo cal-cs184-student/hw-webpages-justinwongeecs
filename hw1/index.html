@@ -108,7 +108,32 @@
 					padding: 20px 16px 40px;
 				}
 			}
-		</style>
+
+				@media print {
+					/* Print engines often ignore page breaks inside flex layouts. */
+					.page {
+						display: block;
+					}
+
+					.sidebar {
+						display: none;
+					}
+
+					.main-content,
+					.container {
+						display: block;
+						max-width: none;
+						width: auto;
+					}
+
+					.page-break {
+						display: block;
+						height: 0;
+						break-before: page;
+						page-break-before: always;
+					}
+				}
+			</style>
 		<script src="design-system.js"></script>
 	</head>
 	<body>

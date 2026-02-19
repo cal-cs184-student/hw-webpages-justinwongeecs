@@ -1,0 +1,65 @@
+<h2>Task 6: “Level sampling” with mipmaps for texture mapping</h2>
+
+<bold-text>What is level sampling? </bold-text> <br><br>
+<ul>
+	<li>When we are working with mipmaps, level sampling is how we choose which mipmap level to sample from when texturing a surface. A mipmap contains the same texture but at different resolutions and scales.
+        When applying a texture to the scene, pixels that are close to the user require a higher level of detail so we choose a mipmap with a lower level. Lower level mipmaps have higher resolution and higher level mipmaps have lower resolution. For pixels further away, we choose a higher level since it requires lower detail due to many texels per pixel. 
+    </li>
+    <li>
+        For our implementation, in <code>RasterizerImp::rasterize_textured_triangle</code>, we find the barycentric u, v vectors for the sample point <code>(x, y)</code>, <code>(x + 1, y)</code>, and <code>(x, y + 1)</code>. 
+        The latter two translate into \((\frac{du}{dx}, \frac{dv}{dx})\) and \((\frac{du}{dy}, \frac{dv}{dy})\) respectively. But we needed to find two difference vectors \((\frac{du}{dx})\) - <code>sp.p_uv</code> * <code>width</code> and \((\frac{du}{dy})\) - <code>sp.p_uv</code> * <code>height</code>. We use these as our representations for  \((\frac{du}{dx}, \frac{dv}{dx})\) and \((\frac{du}{dy}, \frac{dv}{dy})\) with respect to our texture dimensions.
+        Next, we use the equation from the lecture slides \(L = max(\sqrt{(\frac{du}{dx})^2 + \frac{dv}{dx})^2}, \sqrt{(\frac{du}{dy})^2 + (\frac{dv}{dy})^2})\), \(D = log_2{L}\) where \(D\) is the mipmap level. 
+    </li>
+    <li>
+        For <code>L_LINEAR</code>, we get a continuous (as a float) representation of the mipmap level. Then, we get the upper and lower levels bounding it, sample based on the point sampling method, and finally lerp <code>continuous_level - lower_level</code> between the two sampled colors.
+    </li>
+</ul>
+
+
+<bold-text>Discuss the tradeoffs between speed, memory usage, and antialiasing power between pixel sampling, level sampling, and the number of samples per pixel:</bold-text> <br><br>
+<ol>
+    <li><bold-text>Pixel Sampling</bold-text></li>
+    <ul>
+        <li>Speed: Pretty fast as when in NEAREST we are performing 1 lookup and for LINEAR we are performing 4 lookups.</li>
+        <li>Memory Usage: Constant since we are just using the original pixels in the image.</li>
+        <li>Antialiasing Power: Limited as aliased lines will still appear to be blocky and may still contain artifacts.</li>
+    </ul>
+     <li><bold-text>Level Sampling</bold-text></li>
+    <ul>
+        <li>Speed: Slower than pixel sampling, but still faster than number of samples per pixel due to performing calculations for finding the appropriate mipmap level.</li>
+        <li>Memory Usage: Higher, as we need to store the mipmap texture.</li>
+        <li>Antialiasing Power: Good against texture minification and preventing moiré patterns.</li>
+    </ul>
+     <li><bold-text>Number Of Samples Per Pixel</bold-text></li>
+    <ul>
+        <li>Speed: Very slow as the cost scales linearly with sample number.</li>
+        <li>Memory Usage: Our sample buffer size increases linearly with the sample number.</li>
+        <li>Antialiasing Power: Best all of the three, but very expensive.</li>
+    </ul>
+</ol>
+
+<bold-text><i>Image of the Apple Park rainbow shown in different combinations of lsm and psm:</i></bold-text>
+<div style="display: flex; flex-direction: column; align-items: center;">
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/l_zero_p_nearest.png" width="400px"/>
+        <figcaption>L_ZERO, P_NEAREST</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/l_zero_p_linear.png" width="400px"/>
+        <figcaption>L_ZERO, P_LINEAR</figcaption>
+    </td>
+    </tr>
+    <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/l_nearest_p_nearest.png" width="400px"/>
+        <figcaption>L_NEAREST, P_NEAREST</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/l_nearest_p_linear.png" width="400px"/>
+        <figcaption>L_NEAREST, P_LINEAR</figcaption>
+    </td>
+    </tr>
+</table>
+</div>

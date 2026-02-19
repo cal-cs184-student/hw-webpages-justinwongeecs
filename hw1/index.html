@@ -124,7 +124,7 @@
 
 				<br>
 
-				Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+				Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-justinwongeecs/hw1/index.html">https://cal-cs184-student.github.io/hw-webpages-justinwongeecs/hw1/index.html</a>
 				
 				<br>
 
@@ -154,14 +154,26 @@
 			</div>
 		</div>
 
-		<script>
-			// Add task file paths here as you create them (e.g. 'tasks/task2.html', 'tasks/task3.html')
-			const taskFiles = [
-				'task1.html',
+			<script>
+				// Always start at top on load/refresh instead of restoring old scroll/hash position.
+				if ('scrollRestoration' in history) {
+					history.scrollRestoration = 'manual';
+				}
+				window.addEventListener('DOMContentLoaded', () => {
+					if (window.location.hash) {
+						history.replaceState(null, '', window.location.pathname + window.location.search);
+					}
+					window.scrollTo(0, 0);
+				});
+
+				// Add task file paths here as you create them (e.g. 'tasks/task2.html', 'tasks/task3.html')
+				const taskFiles = [
+					'task1.html',
 				'task2.html',
 				'task3.html', 
 				'task4.html', 
-				'task5.html'
+				'task5.html',
+				'task6.html'
 			];
 
 			const container = document.getElementById('tasks-container');

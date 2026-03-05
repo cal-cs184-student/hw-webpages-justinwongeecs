@@ -1,11 +1,50 @@
 <h2>Task 5: Edge Split</h2>
 
-<bold-text> QUESTION </bold-text> <br><br>
+<bold-text>Edge Split Operation</bold-text> <br><br>
+<ul>
+	<li><bold-text>Implementation:</bold-text></li>
+	<li>
+		Our implementation for <code>HalfedgeMesh::flipEdge()</code> served us as a starting point. The tricky and perhaps most difficult part was to keep track all the edges and halfedges created from the new vertex.
+		To faciliate assigning everything the correct values, we first created variables to hold all of the current <code>HalfedgeIter</code>, <code>VertexIter</code>, <code>FaceIter</code>, and <code>EdgeIter</code>. 
+		Then we created all the new stuff that we need to track of:
+		<li>The new vertex, \(m\) via <code>newVertex()</code></li>
+		<li>The new edges (\(m \to c\)), (\(a \to m\)), (\(m \to d\)) via <code>newEdge().</code></li>
+		<li>The new faces (\(acm\)), (\(dmb\)) via <code>newFace().</code></li>
+		<li>The new HalfedgeIter (\(m \to c\)), (\(c \to m\)), (\(m \to a\)), (\(a \to m\)),  (\(m \to d\)),  (\(d \to m\)) via <code>newEdge().</code></li>
+		<li>To set the position of the vertex we used the formula from lecture: <code>v_m->position = 0.5 * ( v_b->position + v_c->position );</code></li>
+		<li>Then, we set all the neighbors for all the <code>HalfedgeIter</code> via <code>setNeighbors()</code>.</li>
+		<li>Finally, we set all the halfedges for the vertices, edges, and faces to the respective ones.</li>
+		<li>We return the next vertex, \(m\).</li>
+	</li>
+	<li>To ensure that our code was readable and prevent bugs, we named all of our variables based on line segments from the screenshot shown in "Part 5: Edge Split". For example, the <code>HalfEdgeIter</code> connecting vertex \(m\) and \(c\) would be named <code>h_mc</code>.
+	As we determined what to set for the half edges and neighbors, this helped us from making any unnecessary mistakes.</li>
+</ul>
 
+<bold-text><i>Some Edge Splits</i></bold-text>
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/basic_edge_splits_before.png" width="400px"/>
+        <figcaption>Before</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/basic_edge_splits_after.png" width="400px"/>
+        <figcaption>After</figcaption>
+    </td>
+    </tr>
+</table>
 
-<bold-text><i>basic/test4.svg</i></bold-text>
-<figure>
-	<img src="screenshots/task_1.png" alt="basic/test4.svg" style="width:70%"/>
-	<figcaption>Observe the "jaggedness" for the triangle edges!</figcaption>
-</figure>
+<bold-text><i>Edge Splits and Flip</i></bold-text>
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/edge_and_flip_before.png" width="400px"/>
+        <figcaption>Before</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/edge_and_flip_after.png" width="400px"/>
+        <figcaption>After</figcaption>
+    </td>
+    </tr>
+</table>
 <div class="page-break"></div>

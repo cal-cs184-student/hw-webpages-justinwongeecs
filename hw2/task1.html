@@ -1,10 +1,59 @@
-<h2>Part 1: Bezier Curves with 1D de Casteljau Subdivision </h2>
+<h2>Task 1: Bezier Curves with 1D de Casteljau Subdivision</h2>
 
-<bold-text> QUESTION </bold-text> <br><br>
+<bold-text>How does de Casteljau's algorithm work?</bold-text> <br><br>
+<ul>
+	<li>Given \(n+1\) control points and a value \(t\) for parameterization, we generate \(n\) new points along the line segments between each point by lerping two consecutive points based on \(t\).</li>
+	<li> We use this helper <code>lerp</code> function to get a value between <code>a</code> and <code>b</code> parameterized by \(t\).
+		<code>
+			inline float lerp(float a, float b, float t) {
+    			return (1.0f - t) * a + t * b;
+  			}
+		</code>
+	</li>
+	<li>The crux of the algorithm is recursion. We recursively generate \(n\) new points from \(n+1\) control points until we are left with one point which is our evaluated point on the beizer curve, parameterized by \(t\).</li>
+</ul>
 
-
-<bold-text><i>basic/test4.svg</i></bold-text>
-<figure>
-	<img src="screenshots/task_1.png" alt="basic/test4.svg" style="width:70%"/>
-	<figcaption>Observe the "jaggedness" for the triangle edges!</figcaption>
-</figure>
+<bold-text><i>Beizer Curve Step-by-Step Evaluation</i></bold-text>
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/cp_step_0.png" width="400px"/>
+        <figcaption>6 Control Points</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/cp_step_1.png" width="400px"/>
+        <figcaption>Recursive Step 1</figcaption>
+    </td>
+    </tr>
+    <tr>
+	<td style="text-align: center;">
+        <img src="screenshots/cp_step_2.png" width="400px"/>
+        <figcaption>Recursive Step 2</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/cp_step_3.png" width="400px"/>
+        <figcaption>Recursive Step 3</figcaption>
+    </td>
+    </tr>
+	<tr>
+		<td style="text-align: center;">
+        <img src="screenshots/cp_step_4.png" width="400px"/>
+        <figcaption>Recursive Step 4</figcaption>
+    </td>
+	<td style="text-align: center;">
+        <img src="screenshots/cp_step_5.png" width="400px"/>
+        <figcaption>Recursive Step 5</figcaption>
+    </td>
+	</tr>
+	<tr>
+	<td style="text-align: center;">
+        <img src="screenshots/cp_step_6.png" width="400px"/>
+        <figcaption>Recursive Step 6</figcaption>
+    </td>
+	<td style="text-align: center;">
+        <img src="screenshots/cp_diff_bezier_curve.png" width="400px"/>
+        <figcaption>Different Beizer Curve With Moved \(t\)</figcaption>
+    </td>
+	</tr>
+</table>
+<div class="page-break"></div>

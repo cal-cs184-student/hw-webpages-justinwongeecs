@@ -1,0 +1,55 @@
+<h2>Part 4: Edge Flip</h2>
+
+<bold-text> Briefly explain how you implemented the edge flip operation and describe any interesting implementation / 
+    debugging tricks you have used. </bold-text> <br><br>
+
+    <p>
+
+        The edge flip operation was done by first identifying all halfedges, vertices, edges, and faces involved 
+        in the two triangles adjacent to the selected edge. The pointers for these elements were then reassigned 
+        by updating the next, twin, vertex, edge, and face references for the halfedges involved in the flip by using 
+        the setNeighbors() function for simplicity. This rewires the mesh so that the edge that is passed in is 
+        replaced with a new edge that connects the opposite vertices. After the flip the halfedge pointers for 
+        the vertices, edges, and faces involved in the flip operation are updated in order to maintain the rest
+        of the original mesh structure. <br><br>
+
+        Debugging the edge flip implementation was initially challenging because it required carefully
+        rewiring several interconnected mesh components. Initially it was difficult to determine how each halfedge, 
+        vertex, edge, and face should be updated after the flip. It helped to visualize the connectivity with a
+        diagram before implementing the flip in code. The 
+
+        <a href="https://stanford-cs248.github.io/Cardinal3D/meshedit/edge_flip" target="_blank">
+        Stanford CS248 MeshEdit documentation
+        </a>
+
+        for edge flipping, as well as the diagram (depicted below), was useful in solidifying my understanding
+        of the edge flip operation.
+
+    </p>
+
+<figure style="text-align:center;">
+  <img src="edge_flip_diagram.png" width="700">
+  <figcaption>
+    Edge flip diagram adapted from 
+    <a href="https://stanford-cs248.github.io/Cardinal3D/meshedit/edge_flip" target="_blank">
+      Stanford CS248 Edge Flip Tutorial
+    </a>.
+  </figcaption>
+</figure>
+
+<bold-text> Show screenshots of the teapot before and after some edge flips. </bold-text> <br><br>
+
+<div style="display: flex; gap: 20px;">
+
+  <div style="text-align: center;">
+    <img src="screenshots/teapot_no_flip .png" width="400">
+    <figcaption>Flat shading without vertex normals</figcaption>
+  </div>
+
+  <div style="text-align: center;">
+    <img src="screenshots/teapot_edge_flip.png" width="400">
+    <figcaption>Phong shading with vertex normals</figcaption>
+  </div>
+</div>
+
+

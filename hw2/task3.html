@@ -1,0 +1,29 @@
+<h2>Part 3: Area-Weighted Vertex Normals</h2>
+
+<bold-text> Briefly explain how you implemented the area-weighted vertex normals</bold-text> <br><br>
+
+<p>
+The area-weighted vertex normal was computed by iterating over the faces incident to the vertex
+ by accessing information stored in the half-edge data structure. Per the half edge traversal 
+ method presented in class, the iteration begins at one outgoing half-edge and continues to travel 
+ to neighboring triangles using h = h->twin()->next() until getting back to the starting half edge. 
+
+For each non-boundary face, the face normal was computed by taking the cross product of two edge 
+vectors of the triangle. The vectors for all the incident faces were accumulated and normalized
+in order to obtain a unit vertex normal to be used for Phong shading. 
+</p>
+
+<bold-text> Screenshots of dae/teapot.dae comparing teapot shading with and without vertex normals</bold-text>
+
+<div style="display: flex; gap: 20px;">
+
+  <div style="text-align: center;">
+    <img src="screenshots/teapot.png" width="400">
+    <figcaption>Flat shading without vertex normals</figcaption>
+  </div>
+
+  <div style="text-align: center;">
+    <img src="screenshots/teapot_phong_shading.png" width="400">
+    <figcaption>Phong shading with vertex normals</figcaption>
+  </div>
+</div>

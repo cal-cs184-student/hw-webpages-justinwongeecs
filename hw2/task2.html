@@ -1,3 +1,32 @@
 <h2>Task 2: Bezier Surfaces with Separable 1D de Casteljau</h2>
 
+<bold-text>How does de Casteljau algorithm extends to Beizer surfaces?</bold-text>
+
+<ul>
+	<li>A Beizer surface can be constructed by multiple Beizer curves of which individually defined by different control points.
+		Now instead of parameterizing with a single variable for a single Beizer curve, since we are in 3D now, we need two variables: \(u\) and \(v\).
+	</li>
+	<li>
+		We use \(u\) to parameterize the set of Beizer curves and perform de Casteljau's algorithm to recursively lerp the control points until we evaluate at a single point. If we have 
+		\(m\) Beizer curves, we will get \(m\) points for each curve. We can then connect each of the evaluated points to form another curve in the direction orthogonal of the Beizer curves.
+		To evaluate a point on this connecting curve, we use \(v\) to parameterize along this curve. The result can be thought of as sweeping through the Beizer curves forming a surface through 3D space.
+	</li>
+	<li>
+		<bold-text>Implementation:</bold-text>
+		<ol>
+			<li>First, we extended the single recursive step from 2D to 3D space by adding an additional coordinate for the z-axis.</li>
+			<li>Then, we wrote a helper function that fully evaluates a point on a single Beizer curve in 3D space.</li>
+			<li>Finally, we put everything together by using the helper function we wrote in step 2 to evaluate the points for each of the Beizer curve, parameterized by \(u\) and evaluating the final point, parameterized by \(v\) through all of these intermediate points.</li>
+		</ol>
+
+	</li>
+</ul>
+
+<bold-text><i>bez/teapot.bez</i></bold-text>
+<figure>
+	<img src="screenshots/teapot_wireframe.png" alt="basic/test4.svg" style="width:70%"/>
+	<figcaption>A teapot in wireframe mode</figcaption>
+</figure>
+<div class="page-break"></div>
+
 <div class="page-break"></div>

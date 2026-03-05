@@ -144,7 +144,7 @@
 			</aside>
 			<div class="main-content">
 				<div class="container">
-				<h1>CS184/284A Spring 2025 Homework 1 Write-Up</h1>
+				<h1>CS184/284A Spring 2025 Homework 2 Write-Up</h1>
 				<div style="text-align: center;">Names: Valerie He, Justin Wong</div>
 
 				<br>
@@ -160,10 +160,14 @@
 				-->
 
 				<h2>Overview</h2>
-				Through these six tasks, we incrementally built a basic rasterizer that is able to draw triangles, antialias them, apply transforms for mutation, interpolate colors, and support pixel & level sampling with mipmaps. Through basic mathematical equations, we 
-				were able to describe visually how colors can be created and mutated. Most of the math was related to triangles as they are the primative fundamental building blocks for graphics. At the crux of presenting different shapes on the screen, lies the problem of antialiasing. 
-				We've explored three different antialiasing techniques: the number of samples per pixel, pixel sampling, and level sampling where each method has its own tradeoffs and benefits. It was particularly interesting working with the texture and screen worlds as it felt that we were building
-				bridges between these different but yet seemingly similar realms.
+				In this homework, we worked on constructing Beizer curves using de Casteljau subdivision algorithm and constructed mesh operations like edge and split to eventually perform mesh upsampling.
+				Visualizing how Beizer curves are implemented and understanding the recursive nature of the algorithm was really cool! It's wild how something that looks very complex, can actually be comprised and broken down into just a few fundamental steps and logic. 
+				There's just something so beautiful as it combines aspects of mathematics, computer science, and geometry all into one. Sometimes we really take graphics for granted. 
+				<br><br>
+				When working on the edge flip and split operations, there seemed to be a lot of manual complexity in the sense that we had to keep track of all the different data structures and properties which was quite overwhelming, especially with reassigning all of the pointers. 
+				The <code>HalfEdge</code> data structure was very easy to operate on and definitely helped streamlined many things in the process. 
+				<br><br>
+				Finally, we implemented a mesh upsampling algorithm that uses both edge flip and split to increase the number of triangles by four times as before to create a mesh with greater detail.
 
 
 				<!-- Task content is loaded from tasks/task1.html, task2.html, etc. -->

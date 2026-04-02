@@ -160,7 +160,37 @@
 				-->
 
 				<h2>Overview</h2>
-				<b>[TODO]</b>
+
+				<p>
+				In this assignment, we built a path tracer using simple baseline methods and then improved its performance
+				and image quality through acceleration structures, lighting algorithms, and adaptive sampling techniques.
+				</p>
+
+				<p>
+				In Task 1, rays were generated from the camera and used to detect scene geometry by computing primitive
+				intersections with shapes such as triangles and spheres.
+				</p>
+
+				<p>
+				In Task 2, this intersection process was accelerated by constructing a Bounding Volume Hierarchy (BVH),
+				which reduced the number of intersection tests by filtering out groups of primitives that could not be
+				hit.
+				</p>
+
+				<p><strong>TODO: Add summary sentences for Task 4 and Task 5.</strong></p>
+
+				<p>
+				In Task 5, adaptive sampling was implemented to reduce the number of samples performed per pixel by
+				allocating more samples to complex regions and fewer to simpler ones.
+				</p>
+
+				<p>
+				One of the main challenges in this assignment was understanding how the different components of the
+				rendering pipeline interacted with each other. It was sometimes difficult to tell which stage a rendering
+				error came from, and debugging was further slowed by long render times, which made testing and verifying
+				changes more time-consuming.
+				</p>
+
 
 				<!-- Task content is loaded from tasks/task1.html, task2.html, etc. -->
 				<div id="tasks-container"></div>

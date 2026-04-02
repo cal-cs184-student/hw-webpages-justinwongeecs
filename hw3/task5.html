@@ -1,4 +1,83 @@
 <h2>Task 5: Adaptive Sampling</h2>
 
+<p><strong>Explain adaptive sampling. Walk through your implementation
+     of the adaptive sampling</strong></p>
+
+<p>
+	Adaptive sampling improves rendering efficiency by reducing the number of samples taken for pixels that
+	converge quickly while continuing to invest more samples in pixels that remain noisy. Instead of forcing every
+	pixel to use the same fixed sampling budget, it monitors how stable the estimated pixel color is over time and
+	stops early once that estimate has converged. This makes the renderer spend less work on smooth, low-variance
+	regions and more work on difficult regions such as edges, shadows, reflections, and indirect lighting.
+</p>
+
+<p>
+	In our implementation, adaptive sampling was added in <code>raytrace_pixel()</code>. For each pixel, we keep running
+	sums of the illumination values, <code>s1</code> and <code>s2</code>, as samples are accumulated. Every
+	<code>samplesPerBatch</code> samples, we compute the sample mean and variance:
+</p>
+
+\[
+\mu = \frac{s_1}{n}
+\]
+
+\[
+\sigma^2 = \frac{1}{n - 1}\left(s_2 - \frac{s_1^2}{n}\right)
+\]
+
+<p>
+	From this, we estimate a 95% confidence interval for the pixel value using:
+</p>
+
+\[
+I = 1.96 \cdot \frac{\sqrt{\sigma^2}}{\sqrt{n}}
+\]
+
+<p>
+	If the interval is small enough relative to the mean, meaning
+	\( I \leq \text{maxTolerance} \cdot \mu \), then the pixel is considered converged and sampling stops early. Otherwise,
+	the pixel continues to receive more samples until it either converges or reaches the maximum sample count. In
+	other words, pixels whose colors stabilize quickly terminate early, while noisy pixels continue sampling until
+	the estimate becomes reliable.
+</p>
+
+<p>
+	After sampling finishes, the final pixel color is computed by averaging the accumulated radiance using the
+	actual number of samples taken for that pixel rather than the global maximum. That per-pixel sample count is
+	also stored in <code>sampleCountBuffer</code>, which is later used to generate the <code>_rate</code> images.
+	These rate images visualize how sampling effort is distributed across the scene, making it easy to see that
+	complex regions receive more samples and already-stable regions receive fewer.
+</p>
+
+<p><b>Pick two scenes and render them with at least 2048 samples per pixel.</b></p>
+
+<p><b>Wall-E Scene</b></p>
+
+<div style="display: flex; gap: 12px; align-items: flex-start; justify-content: center; flex-wrap: nowrap;">
+	<figure style="margin: 0;">
+		<img src="screenshots/wall-e.png" alt="Wall-E render" style="max-width: 100%; width: 300px;">
+		<figcaption>walle.png</figcaption>
+	</figure>
+	<figure style="margin: 0;">
+		<img src="screenshots/wall-e_rate.png" alt="Wall-E adaptive sampling rate image" style="max-width: 100%; width: 300px;">
+		<figcaption>walle_rate.png</figcaption>
+	</figure>
+</div>
+
+<br>
+
+<p><b>Building Scene</b></p>
+
+
+<div style="display: flex; gap: 12px; align-items: flex-start; justify-content: center; flex-wrap: nowrap;">
+	<figure style="margin: 0;">
+		<img src="screenshots/building.png" alt="Building render" style="max-width: 100%; width: 350px;">
+		<figcaption>building.png</figcaption>
+	</figure>
+	<figure style="margin: 0;">
+		<img src="screenshots/building_rate.png" alt="Building adaptive sampling rate image" style="max-width: 100%; width: 350px;">
+		<figcaption>building_rate.png</figcaption>
+	</figure>
+</div>
 
 <div class="page-break"></div>

@@ -1,4 +1,80 @@
 <h2>Task 3: Direct Illumination</h2>
 
+<bold-text>Walk through both implementations of the direct lighting function.</bold-text>
+
+<p>Both algorithms have a similar structure. For each sample interation, we sample a direction, create a ray originating from the hit point in the direction of the sampled direction, check to see if the ray intersects the intersection via BVH, and finally use the reflection equaiton to figure out how much outgoing light there is. </p>
+<p>The main difference is that when we sample a direction, in uniform hemisphere sampling we sample uniformly in any direction in the enclosing hemisphere. In direct lighting sampling, we specifically only sample in the direction of the point lights.</p>
+
+<br>
+<br>
+
+<bold-text>Show some images rendered with both implementations of the direct lighting function.</bold-text>
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task3/p3_uh_CBbunny_H_64_32.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae Uniform Hemisphere<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task3/p3_uh_dragon_64_32.png" style="width:100%">
+        <figcaption>dae/sky/dragon.dae Uniform Hemisphere (NOT SUPPORTED)</figcaption>
+    </td>
+    </tr>
+
+     <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/task3/p3_dl_CBbunny_H_64_32.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae Direct Lighting</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task3/p3_dl_dragon_64_32.png" style="width:100%">
+        <figcaption>dae/sky/dragon.dae Direct Lighting</figcaption>
+    </td>
+    </tr>
+</table>
+
+<br>
+<br>
+
+<bold-text>Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.</bold-text>
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task3/p3_dl_1_1_bunny.png" style="width:100%">
+        <figcaption>1 light ray, 1 sample per pixel<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task3/p3_dl_4_1_bunny.png" style="width:100%">
+        <figcaption>4 light rays, 1 sample per pixel</figcaption>
+    </td>
+    </tr>
+
+     <tr>
+    <td style="text-align: center;">
+        <img src="screenshots/task3/p3_dl_16_1_bunny.png" style="width:100%">
+        <figcaption>16 light rays, 1 sample per pixel</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task3/p3_dl_64_1_bunny.png" style="width:100%">
+        <figcaption>32 light rays, 1 sample per pixel</figcaption>
+    </td>
+    </tr>
+</table>
+
+<p>From the focused screenshots in the table above, we can observe as the number of light rays increases, the noise (graininess) in the shadows become softer and smoother.</p>
+
+<br>
+<br>
+
+<bold-text> Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis. </bold-text>
+
+<p>
+The main difference between the two methods is what distribution we are sampling from which results in different qualities when capturing the contributions. In uniform hemisphere sampling (UHS), we choose directions evenly over the hemisphere above the surface whereas, in direct lighting sampling (DLS), we explicitly choose directions towards light sources with no obstructions in between. UHS typically results in renders with more noise since it wastes most of its samples on directions that contribute little to no light.
+</p>
+<p>
+
+</p>
 
 <div class="page-break"></div>

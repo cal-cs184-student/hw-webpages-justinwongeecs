@@ -1,4 +1,114 @@
 <h2>Task 2: Bounding Volume Hierarchy</h2>
 
+<style>
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 900px;
+  }
+
+  .image-grid figure {
+    margin: 0;
+  }
+
+  .image-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #ccc;
+  }
+
+  .image-grid figcaption {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+</style>
+
+<p><strong>Explain how your BVH is constructed. How did you choose your 
+    splitting axis and point?</strong></p>
+
+<p>
+First, a bounding box was computed over all the primitives in the current node. If the number of
+primitives is less than or equal to a threshold <code>max_leaf_size</code>, the node becomes a leaf
+and those primitives are stored in it. If the number of primitives exceeds the
+<code>max_leaf_size</code>, then they are split into two groups to become child nodes. This process
+is repeated until all nodes satisfy the leaf size condition.
+</p>
+
+<p>
+The split heuristic was chosen to be the midpoints of centroids along an axis. First, a bounding
+box over all of the centroids of the primitives was computed, and the axis on which the primitives
+are the most spread out is selected as the axis to split on. The primitive midpoints are then split
+along that axis, with half going to each of the child nodes of the resulting binary tree.
+</p>
+
+<p><strong>Images with normal shading for large .dae files that you can only render with BVH acceleration.</strong></p>
+
+<div class="image-grid">
+  <figure>
+    <img src="screenshots/bunny_microfacet_cu.png" alt="Bunny microfacet render">
+    <figcaption>Bunny Microfacet</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/CBlucy.png" alt="CBlucy render">
+    <figcaption>CBlucy</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/cow.png" alt="Cow render">
+    <figcaption>Cow</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/maxplanck.png" alt="Max Planck render">
+    <figcaption>Max Planck</figcaption>
+  </figure>
+</div>
+
+<p><strong> Compare rendering times on a few scenes with moderately complex geometries 
+    with and without BVH acceleration. Present your results in a one-paragraph analysis. </strong></p>
+
+<p>
+Rendering scenes with moderately complex geometries takes much longer without BVH acceleration,
+since each ray has to be tested against every primitive in the scene. As scene geometry becomes
+more complex, this significantly increases the amount of work required for each rendered pixel.
+With BVH acceleration, rendering becomes much faster because rays can first be tested against
+bounding boxes, allowing entire groups of primitives to be skipped during traversal. If a ray does
+not intersect a node's bounding box, then none of the primitives inside that node need to be tested.
+This greatly reduces the number of primitive intersection tests and improves rendering performance.
+</p>
+
+<p><strong>Rendering time comparison:</strong></p>
+
+<ul>
+  <li>
+    <code>bunny_microfacet_cu.dae</code>
+    <ul>
+      <li><strong>No BVH</strong>: 84.4 seconds</li>
+      <li><strong>BVH</strong>: 0.115 seconds</li>
+    </ul>
+  </li>
+  <li>
+    <code>CBlucy.dae</code>
+    <ul>
+      <li><strong>No BVH</strong>: 280.5 seconds</li>
+      <li><strong>BVH</strong>: 0.0613 seconds</li>
+    </ul>
+  </li>
+  <li>
+    <code>cow.dae</code>
+    <ul>
+      <li><strong>No BVH</strong>: 13.2 seconds</li>
+      <li><strong>BVH</strong>: 0.135 seconds</li>
+    </ul>
+  </li>
+  <li>
+    <code>maxplanck.dae</code>
+    <ul>
+      <li><strong>No BVH</strong>: 121.2 seconds</li>
+      <li><strong>BVH</strong>: 0.143 seconds</li>
+    </ul>
+  </li>
+</ul>
 
 <div class="page-break"></div>

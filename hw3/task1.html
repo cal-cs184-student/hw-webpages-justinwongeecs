@@ -1,5 +1,31 @@
 <h2>Task 1: Ray Generation and Scene Intersection</h2>
 
+<style>
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 900px;
+  }
+
+  .image-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #ccc;
+  }
+
+  .image-grid figure {
+    margin: 0;
+  }
+
+  .image-grid figcaption {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+</style>
+
 <div class="page-break"></div>
 
 <p><strong>Walk through the ray generation and primitive intersection parts of the
@@ -20,8 +46,8 @@ The total radiance is accumulated and then averaged to produce the final pixel c
 
 <p>
 The primitive intersection portion of the pipeline involves casting rays against scene primitives
- (basic geometric objects) and looking for the closest intersection point by updating the ray’s maximum 
- distance whenever a closer hit is found. If a ray does not intersect with any primitive, the background color
+ (basic geometric objects) and looking for the closest intersection point by updating the maximum 
+ distance of the ray whenever a closer hit is found. If a ray does not intersect with any primitive, the background color
   is returned. For intersections with a primitive, the surface normal is used for shading.
 </p>
 
@@ -30,7 +56,7 @@ The primitive intersection portion of the pipeline involves casting rays against
 <p><strong>Explain the triangle intersection algorithm you implemented in your own words.</strong></p>
 
 <p>
-Triangle intersection was implemented using the Möller–Trumbore algorithm introduced in lecture. 
+Triangle intersection was implemented using the M&ouml;ller Trumbore algorithm introduced in lecture. 
 First, two triangle edges are computed by subtracting the vertex position vectors. 
 Next, the determinant is calculated, which measures how much the ray deviates from the plane of the triangle. 
 A determinant of zero indicates that the ray is parallel to the plane of the triangle and that there is no intersection.
@@ -38,7 +64,7 @@ A determinant of zero indicates that the ray is parallel to the plane of the tri
 
 <p>
 Next, the barycentric coordinates u and v are computed to determine if the intersection point lies inside the triangle. 
-The hit is only valid if it satisfies u ≥ 0, v ≥ 0, and u + v ≤ 1. There is also a check to ensure that the intersection 
+The hit is only valid if it satisfies u &ge; 0, v &ge; 0, and u + v &le; 1. There is also a check to ensure that the intersection 
 occurs within the valid range of the ray.
 </p>
 
@@ -47,4 +73,27 @@ If all conditions are met, the ray.max_t field is updated so that only closer in
 computations, ensuring that only the closest valid intersection remains relevant.
 </p>
 
+<br>
+
 <p><strong> Normal shading for a few small .dae files.</strong>
+
+<div class="image-grid">
+  <figure>
+    <img src="screenshots/banana.png" alt="Banana render">
+    <figcaption>Banana</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/CBcoil.png" alt="CBcoil render">
+    <figcaption>CBcoil</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/CBspheres.png" alt="CBspheres render">
+    <figcaption>CBspheres</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/teapot.png" alt="Teapot render">
+    <figcaption>Teapot</figcaption>
+  </figure>
+</div>
+
+    

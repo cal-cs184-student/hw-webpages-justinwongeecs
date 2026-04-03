@@ -1,4 +1,181 @@
 <h2>Task 4: Global Illumination</h2>
 
+<bold-text>Walk through your implementation of the indirect lighting function.</bold-text>
+<br>
+<br>
+
+<p>For the indirect lighting function, we sample from the intersection's BSDF, create ray with the hit point as the origin in the direction sampled, check if the ray intersects the intersection, recursively call PathTracer::at_least_bounce_radiance, and at the end call the reflection equation with the resulting radiance after N number of bounces.</p>
+
+<br>
+<br>
+
+<bold-text>Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</bold-text>
+
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_dl_compare.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae Global Direct Lighting<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_gl_compare.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae Global Indirect Lighting</figcaption>
+    </td>
+    </tr>
+</table>
+
+<br>
+<br>
+
+<bold-text>For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your write-up what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</bold-text>
+
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_mrd_0_iAB_false_compare.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 0 isAccumBounces=false<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_1_iAB_false_compare.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 1 isAccumBounces=false</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_2_iAB_false.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 2 isAccumBounces=false</figcaption>
+    </td>
+    </tr>
+
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_mrd_3_iAB_false.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 3 isAccumBounces=false<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_4_iAB_false.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 4 isAccumBounces=false</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_5_iAB_false.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 5 isAccumBounces=false</figcaption>
+    </td>
+    </tr>
+</table>
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_mrd_0_iAB_true.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 0 isAccumBounces=true<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_1_iAB_true.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 1 isAccumBounces=true</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_2_iAB_true.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 2 isAccumBounces=true</figcaption>
+    </td>
+    </tr>
+
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_mrd_3_iAB_true.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 3 isAccumBounces=true<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_4_iAB_true.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 4 isAccumBounces=true</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_5_iAB_true.png" style="width:100%">
+        <figcaption>dae/sky/CBbunny.dae max_ray_depth: 5 isAccumBounces=true</figcaption>
+    </td>
+    </tr>
+</table>
+
+<p>For the second bounce of light, we start to see some indications of indirect illumination where the light from the ceiling first higts a surface then bounces onto other surfaces like the bunny which creates color bleeding where the bunny and nearby surfaces pick up faint red and blue tints from the walls.</p>
+<p>For the third bounce of light, the light is allowed to bounce one step further, spreading illumination more eveny throughout the scene resulting in brighter indirect lighting and more noticeable color bleeding.</p>
+<p>As for rasterization, global illumination includes the additional bounces which produces more realistic lighting since rasterization will only capture direct lighting.</p>
+
+<br>
+<br>
+
+<bold-text>For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</bold-text>
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_mrd_0_rr.png" style="width:100%">
+        <figcaption>Russian Roulette  max_ray_depth: 0<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_1_rr.png" style="width:100%">
+        <figcaption>Russian Roulette  max_ray_depth: 1</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_2_rr.png" style="width:100%">
+        <figcaption>Russian Roulette  max_ray_depth: 2</figcaption>
+    </td>
+    </tr>
+
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_mrd_3_rr.png" style="width:100%">
+        <figcaption>Russian Roulette  max_ray_depth: 3<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_4_rr.png" style="width:100%">
+        <figcaption>Russian Roulette  max_ray_depth: 4</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_mrd_100_rr.png" style="width:100%">
+        <figcaption>Russian Roulette  max_ray_depth: 100</figcaption>
+    </td>
+    </tr>
+</table> 
+
+<br>
+<br>
+
+<bold-text>Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</bold-text>
+
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_spp_1.png" style="width:100%">
+        <figcaption>sample per pixel rate: 1<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_spp_2.png" style="width:100%">
+        <figcaption>sample per pixel rate: 2</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_spp_3.png" style="width:100%">
+        <figcaption>sample per pixel rate: 3</figcaption>
+    </td>
+    </tr>
+
+    <tr>
+    <td style="text-align: center;">
+         <img src="screenshots/task4/p4_spp_4.png" style="width:100%">
+        <figcaption>sample per pixel rate: 4<figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_spp_16.png" style="width:100%">
+        <figcaption>sample per pixel rate: 16</figcaption>
+    </td>
+     <td style="text-align: center;">
+        <img src="screenshots/task4/p4_spp_64.png" style="width:100%">
+        <figcaption>sample per pixel rate: 64</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="screenshots/task4/p4_spp_1024.png" style="width:100%">
+        <figcaption>sample per pixel rate: 1024</figcaption>
+    </td>
+    </tr>
+</table> 
+
 
 <div class="page-break"></div>

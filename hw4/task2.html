@@ -1,0 +1,114 @@
+<h2>Task 2: Simulation via Numerical Integration</h2>
+
+<style>
+	figure {
+		text-align: center;
+	}
+
+	figcaption {
+		text-align: center;
+	}
+</style>
+
+<div class="page-break"></div>
+
+<p>
+	<strong>Describe the effects of changing the spring constant ks.
+	How does the cloth behave from start to rest with a very low ks? A high ks?</strong>
+</p>
+
+<p>
+	A low spring constant, <code>ks</code>, means the springs have less resistance. This makes the cloth behave in a
+	looser and more flowy manner. When gravity acts on the cloth as it falls, it swishes around, sags more, and
+	takes longer to reach a still resting state.
+</p>
+
+<p>
+	A high spring constant means the springs have greater resistance, which makes the cloth stiffer and more
+	resistant to stretching. It falls more rigidly, resists the forces of gravity more as it reaches the bottom,
+	and overall has more structure.
+</p>
+
+<p> As seen here, the cloth with a lower ks has more "bend" in the middle of its fall while the 
+	cloth with the higher hs is more rigid and exhibits less bending.
+</p>
+
+<div style="display: flex; gap: 16px;">
+	<figure>
+		<img src="screenshots/task2/pinned2_ks500.png" alt="Pinned cloth with ks=500" width="400px">
+		<figcaption>pinned2 with ks = 500</figcaption>
+	</figure>
+	<figure>
+		<img src="screenshots/task2/pinned2_ks50000.png" alt="Pinned cloth with ks=50000" width="400px">
+		<figcaption>pinned2 with ks = 50000</figcaption>
+	</figure>
+</div>
+
+<p>
+	<strong> What about for density?</strong>
+</p>
+
+<p>
+	A lower density gives the cloth less mass and makes it lighter. This makes the cloth less resistant to motion,
+	so it deforms and bends more easily when interacting with other forces or surfaces.
+</p>
+
+<p>
+	A higher density gives the cloth more mass and makes it heavier. This makes the cloth more resistant to changes
+	in motion. The extra weight also causes the cloth to stretch and sag more as it reaches the bottom of the fall
+	due to greater forces from gravity.
+</p>
+
+<p>
+	Here, it can be seen that the cloth with lower density appears "lighter" and does not deform under its
+	own weight as much as the cloth with higher density, which sags more and appears "heavier".
+</p>
+
+
+<div style="display: flex; gap: 16px;">
+	<figure>
+		<img src="screenshots/task2/pinned2_density0.5.png" alt="Pinned cloth with density 0.5 g/cm^2" width="400px">
+		<figcaption>pinned2 with density = 0.5 g/cm^2</figcaption>
+	</figure>
+	<figure>
+		<img src="screenshots/task2/pinned2_density200.png" alt="Pinned cloth with density 200 g/cm^2" width="400px">
+		<figcaption>pinned2 with density = 200 g/cm^2</figcaption>
+	</figure>
+</div>
+
+
+<p>
+	<strong>What about for damping?</strong>
+</p>
+
+<p>
+	The damping factor determines how quickly the cloth loses energy over time. Low damping causes the cloth to
+	retain more energy, so it bounces more after it falls before fully settling. High damping causes the cloth to
+	lose energy more quickly and come to rest more quickly and smoothly.
+</p>
+
+<p>
+	In these renders, the cloth with low damping bounces around more and takes longer to come to rest, while 
+	the cloth with high damping comes to rest more quickly and smoothly. 
+</p>
+
+<div style="display: flex; gap: 16px;">
+	<figure>
+		<img src="screenshots/task2/pinned2_damping0.023.png" alt="Pinned cloth with damping 0.023" width="400px">
+		<figcaption>pinned2 with damping = 2.3%</figcaption>
+	</figure>
+	<figure>
+		<img src="screenshots/task2/pinned2_damping0.7.png" alt="Pinned cloth with damping 0.7" width="400px">
+		<figcaption>pinned2 with damping = 70%</figcaption>
+	</figure>
+</div>
+
+
+<p>
+	<strong> pinned4 in final resting state </strong>
+</p>
+
+<figure>
+	<img src="screenshots/task2/mesh_final_resting%20.png" alt="Pinned cloth in final resting state" width="600px">
+	<figcaption>pinned4 in final resting state</figcaption>
+</figure>

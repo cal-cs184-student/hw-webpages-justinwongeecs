@@ -1,0 +1,90 @@
+<h2>Task 4: Handling Self-Collisions</h2>
+
+<div class="page-break"></div>
+
+<p>
+	<strong>Describe your implementation of handling self-collisions.</strong>
+</p>
+
+<p>
+	Self-collisions were handled by partitioning the space into 3D boxes and hashing each point mass into a box
+	based on its position. A hash map is built to store point masses that are close to each other. For a given point
+	mass, we check all the other masses in its bucket in the hash table to see if there is another mass that is
+	closer than <code>2 * thickness</code> apart. If there is, a correction vector is applied to separate them. The
+	final correction applied to the point mass is the average of all the corrections, scaled down by
+	<code>simulation_steps</code> to reduce sudden position corrections.
+</p>
+
+<p>
+	<strong>Screenshots that document how your cloth falls and folds on itself</strong>
+</p>
+
+<div style="display: flex; gap: 8px;">
+	<figure style="margin: 0;">
+		<img src="screenshots/task4/self_collision_start_5000.png" alt="Self-collision start with ks 5000" width="260px">
+		<figcaption>Start, ks = 5000</figcaption>
+	</figure>
+	<figure style="margin: 0;">
+		<img src="screenshots/task4/self_collision_middle_5000.png" alt="Self-collision middle with ks 5000" width="260px">
+		<figcaption>Middle, ks = 5000</figcaption>
+	</figure>
+	<figure style="margin: 0;">
+		<img src="screenshots/task4/self_collision_end_5000.png" alt="Self-collision end with ks 5000" width="260px">
+		<figcaption>End, ks = 5000</figcaption>
+	</figure>
+</div>
+
+
+<p>
+	<strong>Self-collisions with various density</strong>
+</p>
+
+
+<figure style="text-align: center;">
+	<div style="display: flex; gap: 8px; justify-content: center;">
+		<img src="screenshots/task4/self_collision_density_start_0.5.png" alt="Self-collision start with density 0.5 g/cm^2" width="360px">
+		<img src="screenshots/task4/self_collision_density_end_0.5.png" alt="Self-collision end with density 0.5 g/cm^2" width="360px">
+	</div>
+	<figcaption>Falling cloth with density 0.5 g/cm^2</figcaption>
+</figure>
+
+
+<figure style="text-align: center;">
+	<div style="display: flex; gap: 8px; justify-content: center;">
+		<img src="screenshots/task4/self_collision_density_start_200.png" alt="Self-collision start with density 200 g/cm^2" width="360px">
+		<img src="screenshots/task4/self_collision_density_end_200.png" alt="Self-collision end with density 200 g/cm^2" width="360px">
+	</div>
+	<figcaption>Falling cloth with density 200 g/cm^2</figcaption>
+</figure>
+
+<p>
+	It can be seen that the cloth with lower density appears "lighter" and does not deform under its 
+	own weight. The cloth with higher density appears "heavier" and sags more under its own weight,
+	which causes it to fold and collide with itself more.
+</p>
+
+<p>
+	<strong>Self-collisions with various spring constant (ks)</strong>
+</p>
+
+<figure style="text-align: center;">
+	<div style="display: flex; gap: 8px; justify-content: center;">
+		<img src="screenshots/task4/self_collision_start_500.png" alt="Self-collision start with spring constant 500" width="240px">
+		<img src="screenshots/task4/self_collision_middle_500.png" alt="Self-collision middle with spring constant 500" width="240px">
+		<img src="screenshots/task4/self_collision_end_500.png" alt="Self-collision end with spring constant 500" width="240px">
+	</div>
+	<figcaption>Falling cloth with spring constant 500</figcaption>
+</figure>
+
+<figure style="text-align: center;">
+	<div style="display: flex; gap: 8px; justify-content: center;">
+		<img src="screenshots/task4/self_collision_start_50000.png" alt="Self-collision start with spring constant 50000" width="240px">
+		<img src="screenshots/task4/self_collision_middle_50000.png" alt="Self-collision middle with spring constant 50000" width="240px">
+		<img src="screenshots/task4/self_collision_end_50000.png" alt="Self-collision end with spring constant 50000" width="240px">
+	</div>
+	<figcaption>Falling cloth with spring constant 50,000</figcaption>
+</figure>
+
+<p>
+	It can be seen that the cloth with spring constant 500 is more flexible and folds more, while the cloth with spring constant 50,000 is stiffer and folds less.
+</p>

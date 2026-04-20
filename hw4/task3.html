@@ -1,0 +1,90 @@
+<h2>Task 3: Handling Collisions with Other Objects</h2>
+
+<style>
+	figure {
+		text-align: center;
+	}
+
+	figcaption {
+		text-align: center;
+	}
+</style>
+
+<div class="page-break"></div>
+
+
+<p>
+	<strong>Describe your implementation of handling collisions with spheres and planes.</strong>
+</p>
+
+<p>
+	Sphere collisions were handled by first checking if the point mass's new position lies inside the sphere. This is
+	done by computing the distance between the point mass and the sphere's center and checking if it is less than or
+	equal to the sphere's radius. If it is, the point mass is projected outward to the sphere's surface along the
+	direction from the sphere's center to the point mass, defining the tangent point.
+</p>
+
+<p>
+	A correction vector from the previous position to the tangent point is computed and scaled down by
+	<code>1 - friction coefficient</code> to move the point mass just outside the sphere while accounting for energy
+	loss due to friction.
+</p>
+
+<p>
+	Plane collisions were handled by checking whether a point mass crosses from one side of the plane to the other
+	by checking the sign of the dot product with the plane normal. If a crossing occurs, the displacement from the
+	previous position to the current position is used to compute the intersection point with the plane along its
+	path, referred to as the tangent point.
+</p>
+
+<p>
+	A small offset is applied in the direction of the side the point mass started from so it will rest on top of the
+	flat surface. A correction vector from the previous position to the new point is scaled by
+	<code>1 - friction coefficient</code> and applied to ensure the point mass remains just above the plane while
+	accounting for energy loss due to friction.
+</p>
+
+<p>
+	<strong>
+		Show us screenshots of your shaded cloth from scene/sphere.json in its final
+		 resting state on the sphere using the default ks = 5000 as well as with ks = 500
+		 and ks = 50000. Describe the differences in the results.
+	</strong>
+</p>
+
+
+<figure>
+	<img src="screenshots/task3/sphere_500.png" alt="Cloth resting on sphere with ks 500" width="600px">
+	<figcaption>ks = 500</figcaption>
+</figure>
+
+<figure>
+	<img src="screenshots/task3/sphere_5000.png" alt="Cloth resting on sphere with ks 5000" width="600px">
+	<figcaption>ks = 5000</figcaption>
+</figure>
+
+<figure>
+	<img src="screenshots/task3/sphere_50000.png" alt="Cloth resting on sphere with ks 50000" width="600px">
+	<figcaption>ks = 50000</figcaption>
+</figure>
+
+<p>
+	Lower spring constants represent springs with low stiffness, which results in a cloth that has a softer and
+	more elastic appearance. In the simulation with <code>ks = 500</code>, the cloth drapes over the sphere with
+	more stretch and moves more under the forces of gravity.
+</p>
+
+<p>
+	Higher spring constants represent springs with greater stiffness, which results in a cloth that does not bend
+	as easily. In the simulation with <code>ks = 50000</code>, the cloth drapes over the sphere in a more rigid way
+	where it does not mold to the shape as easily and has larger folds.
+</p>
+
+<p>
+	<strong>Show us a screenshot of your shaded cloth lying peacefully at rest on the plane.</strong>
+</p>
+
+<figure>
+	<img src="screenshots/task3/cloth_on_plane.png" alt="Cloth lying at rest on the plane" width="600px">
+	<figcaption>Cloth lying at rest on the plane</figcaption>
+</figure>
